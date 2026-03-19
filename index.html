@@ -1,0 +1,705 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Mon Vocabulaire — French Word Journal</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,500;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet" />
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --bg:        #faf9f6;
+    --bg2:       #f2f0eb;
+    --bg3:       #eceae3;
+    --text:      #1a1917;
+    --text2:     #5c5a54;
+    --text3:     #9c9a93;
+    --border:    rgba(26,25,23,0.1);
+    --border2:   rgba(26,25,23,0.18);
+    --radius:    8px;
+    --radius-lg: 12px;
+    --font-serif: 'Playfair Display', Georgia, serif;
+    --font-sans:  'DM Sans', system-ui, sans-serif;
+    --blue-bg:   #e6f1fb; --blue-text: #185fa5;
+    --pink-bg:   #fbeaf0; --pink-text: #993556;
+    --green-bg:  #eaf3de; --green-text: #3b6d11;
+    --gray-bg:   #f1efe8; --gray-text:  #5f5e5a;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    :root {
+      --bg:      #1c1b18;
+      --bg2:     #252420;
+      --bg3:     #2e2c27;
+      --text:    #f0ede6;
+      --text2:   #a8a49a;
+      --text3:   #6a6760;
+      --border:  rgba(240,237,230,0.1);
+      --border2: rgba(240,237,230,0.18);
+      --blue-bg: #0c2a45; --blue-text: #85b7eb;
+      --pink-bg: #3a1424; --pink-text: #ed93b1;
+      --green-bg:#1a2e0d; --green-text:#97c459;
+      --gray-bg: #2a2924; --gray-text: #b4b2a9;
+    }
+  }
+
+  html, body { height: 100%; }
+
+  body {
+    font-family: var(--font-sans);
+    background: var(--bg);
+    color: var(--text);
+    font-size: 14px;
+    line-height: 1.5;
+    min-height: 100vh;
+  }
+
+  /* ── Layout ── */
+  .page { max-width: 1140px; margin: 0 auto; padding: 3rem 2rem 4rem; }
+
+  /* ── Header ── */
+  .site-header { display: flex; align-items: flex-end; justify-content: space-between; margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem; }
+  .site-header h1 { font-family: var(--font-serif); font-size: 32px; font-weight: 400; letter-spacing: -0.5px; color: var(--text); }
+  .site-header h1 em { font-style: italic; color: var(--text2); }
+  .site-header p { font-size: 13px; color: var(--text3); margin-top: 3px; font-weight: 300; letter-spacing: 0.3px; }
+  .header-actions { display: flex; gap: 8px; flex-wrap: wrap; }
+
+  /* ── Buttons ── */
+  .btn {
+    font-family: var(--font-sans);
+    font-size: 13px;
+    font-weight: 500;
+    padding: 0 16px;
+    height: 36px;
+    border-radius: var(--radius);
+    cursor: pointer;
+    transition: opacity 0.15s, background 0.15s;
+    white-space: nowrap;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .btn-primary { background: var(--text); color: var(--bg); border: none; }
+  .btn-primary:hover { opacity: 0.82; }
+  .btn-outline { background: transparent; color: var(--text2); border: 0.5px solid var(--border2); }
+  .btn-outline:hover { background: var(--bg2); }
+  .btn-danger { background: transparent; color: var(--text2); border: 0.5px solid var(--border2); }
+  .btn-danger:hover { color: #c0392b; border-color: #c0392b; }
+
+  /* ── Stats ── */
+  .stats { display: flex; gap: 12px; margin-bottom: 1.75rem; flex-wrap: wrap; }
+  .stat { background: var(--bg2); border-radius: var(--radius); padding: 10px 18px; }
+  .stat-label { font-size: 10px; color: var(--text3); text-transform: uppercase; letter-spacing: 0.9px; font-weight: 500; }
+  .stat-val { font-size: 24px; font-weight: 400; font-family: var(--font-serif); color: var(--text); margin-top: 1px; }
+
+  /* ── Controls ── */
+  .controls { display: flex; gap: 10px; margin-bottom: 1.5rem; flex-wrap: wrap; align-items: center; }
+  .controls input[type="text"] {
+    flex: 1; min-width: 160px;
+    font-family: var(--font-sans); font-size: 13px;
+    height: 36px; padding: 0 12px;
+    border: 0.5px solid var(--border2);
+    border-radius: var(--radius);
+    background: var(--bg);
+    color: var(--text);
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .controls input[type="text"]:focus { border-color: var(--text3); }
+  .controls select {
+    font-family: var(--font-sans); font-size: 13px;
+    height: 36px; padding: 0 10px;
+    border: 0.5px solid var(--border2);
+    border-radius: var(--radius);
+    background: var(--bg); color: var(--text);
+    cursor: pointer; outline: none;
+  }
+
+  /* ── Table ── */
+  .table-wrap { overflow-x: auto; border: 0.5px solid var(--border); border-radius: var(--radius-lg); }
+
+  table { width: 100%; border-collapse: collapse; font-size: 12.5px; }
+
+  thead tr.row-group th {
+    padding: 7px 10px;
+    font-size: 10px; font-weight: 500;
+    text-transform: uppercase; letter-spacing: 0.8px;
+    text-align: center;
+    border-bottom: 0.5px solid var(--border);
+  }
+  thead tr.row-group th.left { text-align: left; background: var(--bg2); color: var(--text3); }
+  thead tr.row-group th.group-verb { background: var(--blue-bg); color: var(--blue-text); }
+  thead tr.row-group th.group-adj  { background: var(--pink-bg); color: var(--pink-text); }
+  thead tr.row-group th.group-other{ background: var(--gray-bg); color: var(--gray-text); }
+
+  thead tr.row-cols th {
+    padding: 8px 10px;
+    font-size: 10px; font-weight: 500;
+    color: var(--text3); text-transform: uppercase; letter-spacing: 0.6px;
+    border-bottom: 1px solid var(--border2);
+    cursor: pointer; user-select: none;
+    text-align: left; white-space: nowrap;
+    background: var(--bg2);
+  }
+  thead tr.row-cols th:hover { color: var(--text); }
+  thead tr.row-cols th.sorted { color: var(--text); }
+
+  tbody tr { border-bottom: 0.5px solid var(--border); }
+  tbody tr:last-child { border-bottom: none; }
+  tbody tr:hover td { background: var(--bg2); }
+
+  td { padding: 10px 10px; vertical-align: top; color: var(--text); }
+
+  .word-cell { font-family: var(--font-serif); font-size: 15px; font-weight: 400; white-space: nowrap; }
+  .def-cell  { color: var(--text2); line-height: 1.5; }
+  .forms-cell { color: var(--text2); font-size: 12px; line-height: 1.7; font-style: italic; }
+  .forms-cell.empty-cell { color: var(--text3); font-style: normal; text-align: center; font-size: 16px; opacity: 0.4; }
+  .note-cell { font-size: 12px; color: var(--text3); font-style: italic; line-height: 1.5; }
+
+  /* ── Badges ── */
+  .badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 20px; font-weight: 500; }
+  .badge-masc { background: var(--blue-bg); color: var(--blue-text); }
+  .badge-fem  { background: var(--pink-bg); color: var(--pink-text); }
+  .badge-neut { background: var(--gray-bg); color: var(--gray-text); }
+  .type-badge { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 20px; background: var(--bg3); color: var(--text2); }
+  .topic-tag  { display: inline-block; font-size: 11px; padding: 2px 8px; border-radius: 20px; background: var(--green-bg); color: var(--green-text); }
+
+  .btn-del { background: none; border: none; cursor: pointer; color: var(--text3); font-size: 18px; padding: 2px 5px; border-radius: 4px; transition: color 0.15s; line-height: 1; }
+  .btn-del:hover { color: #c0392b; }
+
+  .empty-state { text-align: center; padding: 4rem 1rem; color: var(--text3); font-size: 14px; }
+  .empty-state p { font-style: italic; }
+  .empty-state .empty-icon { font-size: 36px; margin-bottom: 12px; }
+
+  /* ── Modal backdrop ── */
+  .modal-bg {
+    display: none; position: fixed; inset: 0;
+    background: rgba(0,0,0,0.35);
+    z-index: 200;
+    align-items: center; justify-content: center;
+    padding: 1rem;
+  }
+  .modal-bg.open { display: flex; }
+
+  .modal {
+    background: var(--bg);
+    border-radius: var(--radius-lg);
+    border: 0.5px solid var(--border2);
+    padding: 1.75rem;
+    width: 100%; max-width: 560px;
+    max-height: 92vh; overflow-y: auto;
+    box-shadow: 0 20px 60px rgba(0,0,0,0.2);
+  }
+
+  .modal h2 { font-family: var(--font-serif); font-size: 22px; font-weight: 400; margin-bottom: 1.5rem; color: var(--text); }
+
+  .form-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .form-group { display: flex; flex-direction: column; gap: 6px; }
+  .form-group.full { grid-column: 1 / -1; }
+
+  label { font-size: 10px; font-weight: 500; color: var(--text3); text-transform: uppercase; letter-spacing: 0.8px; }
+
+  .form-group input[type="text"],
+  .form-group select,
+  .form-group textarea {
+    font-family: var(--font-sans); font-size: 13px;
+    border: 0.5px solid var(--border2);
+    border-radius: var(--radius);
+    padding: 8px 10px;
+    background: var(--bg);
+    color: var(--text);
+    width: 100%;
+    outline: none;
+    transition: border-color 0.15s;
+  }
+  .form-group input:focus,
+  .form-group select:focus,
+  .form-group textarea:focus { border-color: var(--text3); }
+  .form-group textarea { resize: vertical; min-height: 64px; line-height: 1.5; }
+
+  .forms-section {
+    margin-top: 16px;
+    border-top: 0.5px solid var(--border);
+    padding-top: 16px;
+  }
+  .forms-section-title {
+    font-size: 10px; font-weight: 500;
+    color: var(--text3); text-transform: uppercase;
+    letter-spacing: 0.8px; margin-bottom: 12px;
+  }
+  .forms-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 12px; }
+
+  .modal-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 1.5rem; border-top: 0.5px solid var(--border); padding-top: 1.25rem; }
+
+  /* ── Toast ── */
+  .toast {
+    position: fixed; bottom: 2rem; left: 50%; transform: translateX(-50%) translateY(20px);
+    background: var(--text); color: var(--bg);
+    font-size: 13px; padding: 10px 20px;
+    border-radius: 20px;
+    opacity: 0; transition: all 0.25s; pointer-events: none;
+    white-space: nowrap; z-index: 300;
+  }
+  .toast.show { opacity: 1; transform: translateX(-50%) translateY(0); }
+
+  /* ── Import hidden input ── */
+  #import-input { display: none; }
+
+  /* ── Footer ── */
+  .site-footer { margin-top: 3rem; text-align: center; font-size: 12px; color: var(--text3); }
+</style>
+</head>
+<body>
+
+<div class="page">
+
+  <!-- Header -->
+  <header class="site-header">
+    <div>
+      <h1>Mon carnet de <em>vocabulaire</em></h1>
+      <p>Your personal French word journal</p>
+    </div>
+    <div class="header-actions">
+      <button class="btn btn-outline" onclick="exportData()">⬇ Export</button>
+      <button class="btn btn-outline" onclick="document.getElementById('import-input').click()">⬆ Import</button>
+      <input type="file" id="import-input" accept=".json" onchange="importData(event)" />
+      <button class="btn btn-primary" onclick="openModal()">+ Add word</button>
+    </div>
+  </header>
+
+  <!-- Stats -->
+  <div class="stats" id="stats"></div>
+
+  <!-- Filters -->
+  <div class="controls">
+    <input type="text" id="search" placeholder="Search words, definitions, topics…" />
+    <select id="filter-type">
+      <option value="">All types</option>
+      <option>Verb</option>
+      <option>Noun</option>
+      <option>Adjective</option>
+      <option>Adverb</option>
+      <option>Expression</option>
+      <option>Other</option>
+    </select>
+    <select id="filter-gender">
+      <option value="">All genders</option>
+      <option>Masculine</option>
+      <option>Feminine</option>
+      <option>N/A</option>
+    </select>
+    <select id="filter-topic"><option value="">All topics</option></select>
+  </div>
+
+  <!-- Table -->
+  <div class="table-wrap">
+    <table>
+      <thead>
+        <tr class="row-group">
+          <th class="left" colspan="4"></th>
+          <th class="group-verb" colspan="3">Verb forms</th>
+          <th class="group-adj"  colspan="3">Adjective forms</th>
+          <th class="group-other" colspan="1">Notes</th>
+          <th class="left" colspan="1"></th>
+        </tr>
+        <tr class="row-cols">
+          <th onclick="sortBy('word')">Word <span id="arr-word"></span></th>
+          <th onclick="sortBy('definition')">Definition <span id="arr-definition"></span></th>
+          <th onclick="sortBy('type')">Type <span id="arr-type"></span></th>
+          <th onclick="sortBy('topic')">Topic <span id="arr-topic"></span></th>
+          <th onclick="sortBy('v_present')">Present <span id="arr-v_present"></span></th>
+          <th onclick="sortBy('v_passe')">Passé composé <span id="arr-v_passe"></span></th>
+          <th onclick="sortBy('v_other')">Other tenses <span id="arr-v_other"></span></th>
+          <th onclick="sortBy('a_masc')">Masc. <span id="arr-a_masc"></span></th>
+          <th onclick="sortBy('a_fem')">Fém. <span id="arr-a_fem"></span></th>
+          <th onclick="sortBy('a_plural')">Plural <span id="arr-a_plural"></span></th>
+          <th onclick="sortBy('notes')">Notes <span id="arr-notes"></span></th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody id="table-body"></tbody>
+    </table>
+    <div class="empty-state" id="empty-msg" style="display:none;">
+      <div class="empty-icon">📖</div>
+      <p>No words yet — click <strong>+ Add word</strong> to begin your journal.</p>
+    </div>
+  </div>
+
+  <footer class="site-footer">
+    <p>Your words are saved in this browser. Use Export / Import to back up or move your data.</p>
+  </footer>
+</div>
+
+<!-- Add Word Modal -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal">
+    <h2>Add a new word</h2>
+
+    <div class="form-grid">
+      <div class="form-group">
+        <label>French word *</label>
+        <input type="text" id="f-word" placeholder="e.g. manger" />
+      </div>
+      <div class="form-group">
+        <label>Type</label>
+        <select id="f-type" onchange="updateFormSections()">
+          <option>Verb</option>
+          <option>Noun</option>
+          <option>Adjective</option>
+          <option>Adverb</option>
+          <option>Expression</option>
+          <option>Other</option>
+        </select>
+      </div>
+      <div class="form-group full">
+        <label>Definition / translation *</label>
+        <input type="text" id="f-def" placeholder="e.g. to eat" />
+      </div>
+      <div class="form-group" id="gender-group">
+        <label>Gender</label>
+        <select id="f-gender">
+          <option>N/A</option>
+          <option>Masculine</option>
+          <option>Feminine</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Topic</label>
+        <input type="text" id="f-topic" placeholder="e.g. Food, Travel…" />
+      </div>
+    </div>
+
+    <!-- Verb section -->
+    <div class="forms-section" id="verb-section">
+      <div class="forms-section-title">Verb conjugations</div>
+      <div class="forms-grid">
+        <div class="form-group">
+          <label>Present tense</label>
+          <textarea id="f-v-present" placeholder="je mange, tu manges, il mange,&#10;nous mangeons, vous mangez, ils mangent"></textarea>
+        </div>
+        <div class="form-group">
+          <label>Passé composé</label>
+          <textarea id="f-v-passe" placeholder="j'ai mangé, tu as mangé…"></textarea>
+        </div>
+        <div class="form-group full">
+          <label>Other tenses (imparfait, futur, subjonctif…)</label>
+          <textarea id="f-v-other" placeholder="Imparfait: je mangeais…&#10;Futur: je mangerai…"></textarea>
+        </div>
+      </div>
+    </div>
+
+    <!-- Adjective section -->
+    <div class="forms-section" id="adj-section" style="display:none;">
+      <div class="forms-section-title">Adjective forms</div>
+      <div class="forms-grid">
+        <div class="form-group">
+          <label>Masculine</label>
+          <input type="text" id="f-a-masc" placeholder="e.g. beau" />
+        </div>
+        <div class="form-group">
+          <label>Feminine</label>
+          <input type="text" id="f-a-fem" placeholder="e.g. belle" />
+        </div>
+        <div class="form-group">
+          <label>Masc. plural</label>
+          <input type="text" id="f-a-plural-m" placeholder="e.g. beaux" />
+        </div>
+        <div class="form-group">
+          <label>Fem. plural</label>
+          <input type="text" id="f-a-plural-f" placeholder="e.g. belles" />
+        </div>
+      </div>
+    </div>
+
+    <div class="forms-section">
+      <div class="form-group">
+        <label>Notes</label>
+        <textarea id="f-notes" placeholder="Extra usage notes, examples, exceptions…"></textarea>
+      </div>
+    </div>
+
+    <div class="modal-actions">
+      <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-primary" onclick="saveWord()">Save word</button>
+    </div>
+  </div>
+</div>
+
+<!-- Toast -->
+<div class="toast" id="toast"></div>
+
+<script>
+const STORAGE_KEY = 'fr_vocab_v2';
+
+let words = [];
+try { const r = localStorage.getItem(STORAGE_KEY); if (r) words = JSON.parse(r); } catch(e) {}
+
+if (!words.length) {
+  words = [
+    { id:1, word:'manger', definition:'to eat', type:'Verb', gender:'N/A', topic:'Food',
+      v_present:'je mange, tu manges, il mange,\nnous mangeons, vous mangez, ils mangent',
+      v_passe:"j'ai mangé, tu as mangé, il a mangé",
+      v_other:'Imparfait: je mangeais\nFutur: je mangerai',
+      a_masc:'', a_fem:'', a_plural_m:'', a_plural_f:'', notes:'' },
+    { id:2, word:'avoir', definition:'to have', type:'Verb', gender:'N/A', topic:'Core verbs',
+      v_present:"j'ai, tu as, il a,\nnous avons, vous avez, ils ont",
+      v_passe:"j'ai eu, tu as eu",
+      v_other:"Imparfait: j'avais\nFutur: j'aurai",
+      a_masc:'', a_fem:'', a_plural_m:'', a_plural_f:'', notes:'Auxiliary verb for passé composé' },
+    { id:3, word:'beau', definition:'beautiful, handsome', type:'Adjective', gender:'Masculine', topic:'Descriptions',
+      v_present:'', v_passe:'', v_other:'',
+      a_masc:'beau', a_fem:'belle', a_plural_m:'beaux', a_plural_f:'belles',
+      notes:'Becomes bel before a vowel: un bel homme' },
+    { id:4, word:'la maison', definition:'the house', type:'Noun', gender:'Feminine', topic:'Home',
+      v_present:'', v_passe:'', v_other:'', a_masc:'', a_fem:'', a_plural_m:'', a_plural_f:'', notes:'' },
+    { id:5, word:'le train', definition:'the train', type:'Noun', gender:'Masculine', topic:'Travel',
+      v_present:'', v_passe:'', v_other:'', a_masc:'', a_fem:'', a_plural_m:'', a_plural_f:'', notes:'' },
+  ];
+  save();
+}
+
+let sortKey = 'word', sortAsc = true;
+let nextId = Math.max(0, ...words.map(w => w.id)) + 1;
+
+/* ── Persistence ── */
+function save() {
+  try { localStorage.setItem(STORAGE_KEY, JSON.stringify(words)); } catch(e) {}
+}
+
+/* ── Export ── */
+function exportData() {
+  const blob = new Blob([JSON.stringify({ version: 1, exported: new Date().toISOString(), words }, null, 2)], { type: 'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'mon-vocabulaire-' + new Date().toISOString().slice(0,10) + '.json';
+  a.click();
+  URL.revokeObjectURL(url);
+  showToast('Exported ' + words.length + ' words ✓');
+}
+
+/* ── Import ── */
+function importData(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const reader = new FileReader();
+  reader.onload = ev => {
+    try {
+      const data = JSON.parse(ev.target.result);
+      const incoming = data.words || data;
+      if (!Array.isArray(incoming)) throw new Error('Invalid format');
+      const existingIds = new Set(words.map(w => w.word.toLowerCase()));
+      let added = 0;
+      incoming.forEach(w => {
+        if (!existingIds.has((w.word||'').toLowerCase())) {
+          words.push({ ...w, id: nextId++ });
+          added++;
+        }
+      });
+      save();
+      render();
+      showToast('Imported ' + added + ' new word' + (added !== 1 ? 's' : '') + ' ✓');
+    } catch(err) {
+      alert('Could not read file. Make sure it\'s a valid export from this app.');
+    }
+  };
+  reader.readAsText(file);
+  e.target.value = '';
+}
+
+/* ── Helpers ── */
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function nl2br(s) { return esc(s).replace(/\n/g,'<br>'); }
+
+function showToast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(() => t.classList.remove('show'), 2800);
+}
+
+/* ── Filter & Sort ── */
+function getFiltered() {
+  const q   = document.getElementById('search').value.toLowerCase();
+  const ft  = document.getElementById('filter-type').value;
+  const fg  = document.getElementById('filter-gender').value;
+  const fto = document.getElementById('filter-topic').value;
+  return words
+    .filter(w => {
+      if (q && !w.word.toLowerCase().includes(q) &&
+               !w.definition.toLowerCase().includes(q) &&
+               !(w.topic||'').toLowerCase().includes(q)) return false;
+      if (ft && w.type !== ft) return false;
+      if (fg && w.gender !== fg) return false;
+      if (fto && w.topic !== fto) return false;
+      return true;
+    })
+    .sort((a, b) => {
+      const va = String(a[sortKey] || '').toLowerCase();
+      const vb = String(b[sortKey] || '').toLowerCase();
+      return sortAsc ? va.localeCompare(vb, 'fr') : vb.localeCompare(va, 'fr');
+    });
+}
+
+/* ── Render ── */
+function formsCell(content, isEmpty) {
+  if (isEmpty) return `<td class="forms-cell empty-cell">—</td>`;
+  return `<td class="forms-cell">${content}</td>`;
+}
+
+function render() {
+  const filtered = getFiltered();
+  const tbody = document.getElementById('table-body');
+  const empty  = document.getElementById('empty-msg');
+
+  if (!filtered.length) {
+    tbody.innerHTML = '';
+    empty.style.display = 'block';
+  } else {
+    empty.style.display = 'none';
+    const isVerb = w => w.type === 'Verb';
+    const isAdj  = w => w.type === 'Adjective';
+
+    tbody.innerHTML = filtered.map(w => {
+      const gBadge = w.gender === 'Masculine' ? 'badge-masc' : w.gender === 'Feminine' ? 'badge-fem' : 'badge-neut';
+      const gLabel = w.gender === 'Masculine' ? 'masc.' : w.gender === 'Feminine' ? 'fém.' : '—';
+
+      const vPresent = isVerb(w) && w.v_present ? nl2br(w.v_present) : null;
+      const vPasse   = isVerb(w) && w.v_passe   ? nl2br(w.v_passe)   : null;
+      const vOther   = isVerb(w) && w.v_other   ? nl2br(w.v_other)   : null;
+      const aMasc    = isAdj(w)  && w.a_masc    ? esc(w.a_masc)      : null;
+      const aFem     = isAdj(w)  && w.a_fem     ? esc(w.a_fem)       : null;
+      const aPlural  = isAdj(w)  && (w.a_plural_m || w.a_plural_f)
+                       ? [w.a_plural_m, w.a_plural_f].filter(Boolean).join(' / ') : null;
+
+      return `<tr>
+        <td class="word-cell">${esc(w.word)}</td>
+        <td class="def-cell">${esc(w.definition)}</td>
+        <td><span class="type-badge">${esc(w.type)}</span></td>
+        <td>${w.topic ? `<span class="topic-tag">${esc(w.topic)}</span>` : '<span style="opacity:0.3">—</span>'}</td>
+        ${formsCell(vPresent, !vPresent)}
+        ${formsCell(vPasse,   !vPasse)}
+        ${formsCell(vOther,   !vOther)}
+        ${formsCell(aMasc,    !aMasc)}
+        ${formsCell(aFem,     !aFem)}
+        ${formsCell(aPlural,  !aPlural)}
+        <td class="note-cell">${w.notes ? nl2br(w.notes) : '<span style="opacity:0.3">—</span>'}</td>
+        <td><button class="btn-del" onclick="delWord(${w.id})" title="Delete word">×</button></td>
+      </tr>`;
+    }).join('');
+  }
+
+  renderStats();
+  updateTopics();
+  updateSortArrows();
+}
+
+function renderStats() {
+  const verbs = words.filter(w => w.type === 'Verb').length;
+  const nouns = words.filter(w => w.type === 'Noun').length;
+  const adjs  = words.filter(w => w.type === 'Adjective').length;
+  const topics = [...new Set(words.map(w => w.topic).filter(Boolean))].length;
+  document.getElementById('stats').innerHTML = `
+    <div class="stat"><div class="stat-label">Total words</div><div class="stat-val">${words.length}</div></div>
+    <div class="stat"><div class="stat-label">Verbs</div><div class="stat-val">${verbs}</div></div>
+    <div class="stat"><div class="stat-label">Nouns</div><div class="stat-val">${nouns}</div></div>
+    <div class="stat"><div class="stat-label">Adjectives</div><div class="stat-val">${adjs}</div></div>
+    <div class="stat"><div class="stat-label">Topics</div><div class="stat-val">${topics}</div></div>
+  `;
+}
+
+function updateTopics() {
+  const sel = document.getElementById('filter-topic');
+  const cur = sel.value;
+  const topics = [...new Set(words.map(w => w.topic).filter(Boolean))].sort();
+  sel.innerHTML = '<option value="">All topics</option>' +
+    topics.map(t => `<option${t === cur ? ' selected' : ''}>${esc(t)}</option>`).join('');
+}
+
+function updateSortArrows() {
+  ['word','definition','type','topic','v_present','v_passe','v_other','a_masc','a_fem','a_plural','notes']
+    .forEach(k => {
+      const el = document.getElementById('arr-' + k);
+      if (el) el.textContent = sortKey === k ? (sortAsc ? ' ↑' : ' ↓') : '';
+    });
+}
+
+function sortBy(key) {
+  sortKey === key ? (sortAsc = !sortAsc) : (sortKey = key, sortAsc = true);
+  render();
+}
+
+function delWord(id) {
+  if (!confirm('Delete this word?')) return;
+  words = words.filter(w => w.id !== id);
+  save();
+  render();
+  showToast('Word deleted');
+}
+
+/* ── Modal ── */
+function updateFormSections() {
+  const type = document.getElementById('f-type').value;
+  document.getElementById('verb-section').style.display  = type === 'Verb'      ? '' : 'none';
+  document.getElementById('adj-section').style.display   = type === 'Adjective' ? '' : 'none';
+  document.getElementById('gender-group').style.display  = (type === 'Noun' || type === 'Adjective') ? '' : 'none';
+}
+
+function openModal() {
+  ['f-word','f-def','f-topic','f-v-present','f-v-passe','f-v-other',
+   'f-a-masc','f-a-fem','f-a-plural-m','f-a-plural-f','f-notes']
+    .forEach(id => { const el = document.getElementById(id); if (el) el.value = ''; });
+  document.getElementById('f-type').value = 'Verb';
+  document.getElementById('f-gender').value = 'N/A';
+  updateFormSections();
+  document.getElementById('modal-bg').classList.add('open');
+  setTimeout(() => document.getElementById('f-word').focus(), 60);
+}
+
+function closeModal() { document.getElementById('modal-bg').classList.remove('open'); }
+
+function saveWord() {
+  const word = document.getElementById('f-word').value.trim();
+  const def  = document.getElementById('f-def').value.trim();
+  if (!word || !def) { alert('Please fill in the French word and its definition.'); return; }
+  words.push({
+    id: nextId++, word, definition: def,
+    type:       document.getElementById('f-type').value,
+    gender:     document.getElementById('f-gender').value,
+    topic:      document.getElementById('f-topic').value.trim(),
+    v_present:  document.getElementById('f-v-present').value.trim(),
+    v_passe:    document.getElementById('f-v-passe').value.trim(),
+    v_other:    document.getElementById('f-v-other').value.trim(),
+    a_masc:     document.getElementById('f-a-masc').value.trim(),
+    a_fem:      document.getElementById('f-a-fem').value.trim(),
+    a_plural_m: document.getElementById('f-a-plural-m').value.trim(),
+    a_plural_f: document.getElementById('f-a-plural-f').value.trim(),
+    notes:      document.getElementById('f-notes').value.trim(),
+  });
+  save();
+  closeModal();
+  render();
+  showToast('"' + word + '" added ✓');
+}
+
+/* ── Events ── */
+document.getElementById('search').addEventListener('input', render);
+document.getElementById('filter-type').addEventListener('change', render);
+document.getElementById('filter-gender').addEventListener('change', render);
+document.getElementById('filter-topic').addEventListener('change', render);
+document.getElementById('modal-bg').addEventListener('click', e => {
+  if (e.target === e.currentTarget) closeModal();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeModal();
+});
+
+render();
+</script>
+</body>
+</html>
